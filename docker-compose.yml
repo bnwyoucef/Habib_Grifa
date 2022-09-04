@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+  mysql-dev:
+    image: mysql:8.0.17
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: habib_grifa
+    ports:
+      - "3308:3306"
