@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ProductDto } from './dto';
+import { ProductDto, UpdateProductDto } from './dto';
 
 @Injectable()
 export class ProductService {
@@ -36,5 +36,68 @@ export class ProductService {
         }
     }
 
+    async deleteProductById(id: string) {
+        try {
+            const product = await this.prisma.product.delete({
+                where: {
+                    id: parseInt(id)
+                }
+            });
+            return product;
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async updateProduct(id: string,productDto:UpdateProductDto) {
+        let newProduct = {}
+        try {
+            if(productDto.name) {
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    name: productDto.name,
+                }
+               })
+            }
+
+            if(productDto.description) {
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    description: productDto.description,
+                }
+               })
+            }
+            if(productDto.price) {
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    price: parseInt( productDto.price),
+                }
+               })
+            }
+
+            if(productDto.sizes) {
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    sizes: productDto.sizes,
+                }
+               })
+            }
+            return {productDto,num:id};
+        } catch (error) {
+            return error.message;
+        }
+    }
 
 }

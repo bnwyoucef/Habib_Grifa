@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ProductDto } from './dto';
+import { ProductDto, UpdateProductDto } from './dto';
 import { ProductService } from './product.service';
 
 @Controller('product')
@@ -21,5 +21,17 @@ export class ProductController {
     @Get('products')
     getAllProducts() {
         return this.productService.getAllProducts();
+    }
+
+    @Delete(':id')
+    deleteProduct(@Param('id') id: string) {
+        return this.productService.deleteProductById(id);
+    }
+
+    @Patch('update/:id')
+    updateProduct(@Param('id') id: string,@Body() productDto:UpdateProductDto) {
+        console.log(productDto);
+        
+        return this.productService.updateProduct(id,productDto);
     }
 }
