@@ -49,7 +49,7 @@ export class ProductService {
         }
     }
 
-    async updateProduct(id: string,productDto:UpdateProductDto) {
+    async updateProduct(id: string,productDto:UpdateProductDto,images:any) {
         let newProduct = {}
         try {
             if(productDto.name) {
@@ -94,7 +94,21 @@ export class ProductService {
                 }
                })
             }
-            return {productDto,num:id};
+            if(images) {
+                let imagesStr = '';
+                images.forEach((image) => (
+                    imagesStr += image.filename + ','
+                ))
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    images: imagesStr,
+                }
+               })
+            }
+            return newProduct;
         } catch (error) {
             return error.message;
         }
