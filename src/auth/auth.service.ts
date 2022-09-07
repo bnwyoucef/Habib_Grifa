@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
 import { AuthDto } from './dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService,private jwt:JwtService) {}
     async createUser(authDto:AuthDto) {
         try {
             const emailExist = await this.prisma.user.findUnique({
@@ -17,13 +18,13 @@ export class AuthService {
                 return 'Email already exists!';
             }
             const hash = await argon.hash(authDto.password);
-            const user = this.prisma.user.create({
+            const user = await this.prisma.user.create({
                 data:{
                     email: authDto.email,
                     password: hash
                 }
             });
-            return user;
+            return this.signToken(user.id,user.email);
         } catch (error) {
             return error.message;
         }
@@ -40,9 +41,27 @@ export class AuthService {
             const checkPswrd = await argon.verify(user.password,authDto.password);
             if(!checkPswrd) return 'Wrong password!'
             delete user.password;
-            return user;
+            return this.signToken(user.id,user.email);
         } catch (error) {
             return error.message;
         }
+    }
+
+    async signToken(
+        userId: number,
+        email: string,
+      ): Promise<{ access_token: string }> {
+        const payload = {
+          sub: userId,
+          email,
+        };
+    
+        const token = await this.jwt.signAsync(
+          payload,
+        );
+    
+        return {
+          access_token: token,
+        };
     }
 }
