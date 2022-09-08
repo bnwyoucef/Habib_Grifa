@@ -8,6 +8,8 @@ export class ProductDto {
     description: string;
     @IsNotEmpty()
     sizes: string;
+    @IsNotEmpty()
+    categoryId: string;
 }
 
 export class UpdateProductDto {

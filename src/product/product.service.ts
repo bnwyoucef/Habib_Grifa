@@ -19,6 +19,7 @@ export class ProductService {
                    price: parseInt(productDto.price),
                    images: imagesString,
                    sizes: productDto.sizes,
+                   categoryId: parseInt(productDto.categoryId),
                 }
             });
             return product;
