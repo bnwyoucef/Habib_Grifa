@@ -26,6 +26,14 @@ model Product {
   sizes       String
   createdAt   DateTime @default(now())
   Order       Order?
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id           Int       @id @default(autoincrement())
+  categoryName String
+  product      Product[]
 }
 
 model Order {
