@@ -22,7 +22,7 @@ export class CategoryController {
     }
 
     @Patch('update/:id')
-    updateCategory(@Param('id') id: string,categoryDto: CategoryDto) {
+    updateCategory(@Param('id') id: string,@Body() categoryDto: CategoryDto) {
         return this.categoryService.updateCategory(id,categoryDto);
     }
 }

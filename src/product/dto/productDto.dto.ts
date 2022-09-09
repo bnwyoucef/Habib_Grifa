@@ -17,4 +17,5 @@ export class UpdateProductDto {
     price: string;
     description: string;
     sizes: string;
+    categoryId: string;
 }

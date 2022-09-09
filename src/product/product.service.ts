@@ -95,7 +95,17 @@ export class ProductService {
                 }
                })
             }
-            if(images) {
+            if(productDto.categoryId) {
+                newProduct = await this.prisma.product.update({
+                where:{
+                    id: parseInt(id)
+                },
+                data: {
+                    categoryId: parseInt(productDto.categoryId),
+                }
+               })
+            }
+            if(images.length) {
                 let imagesStr = '';
                 images.forEach((image) => (
                     imagesStr += image.filename + ','

@@ -31,6 +31,8 @@ export class ProductController {
     @Patch('update/:id')
     @UseInterceptors(FilesInterceptor('images'))
     updateProduct(@Param('id') id: string,@Body() productDto:UpdateProductDto,@UploadedFiles() images: Array<Express.Multer.File>) {
+        console.log(images);
+        
         return this.productService.updateProduct(id,productDto,images);
     }
 }
