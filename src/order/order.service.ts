@@ -17,7 +17,8 @@ export class OrderService {
                     paymentCheckImage: image.filename,
                     productSize: orderDto.productSize,
                     productQuantity: parseInt(orderDto.productQuantity),
-                    productId: parseInt(orderDto.productId),
+                    product_Id: parseInt(orderDto.productId),
+                    orderCost: "5000"
                 }
             })
             return order;
