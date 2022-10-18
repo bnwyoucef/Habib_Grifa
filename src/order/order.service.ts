@@ -27,7 +27,7 @@ export class OrderService {
                         product_Id: parseInt(orderDto.productId),
                         orderCost: String(orderCost)
                     }
-                })
+                });
                 return order;
             }else {
                 return 'product dont found!'
@@ -39,7 +39,19 @@ export class OrderService {
 
     async getAllOrders() {
         try {
-            const orders = await this.prisma.order.findMany();
+            const orders = await this.prisma.order.findMany({
+                include:{
+                    product:{
+                        select:{
+                            name:true,
+                            description:true,
+                            categoryId:true
+                        }
+                    }
+
+                }
+            });
+            
             return orders;
         } catch (error) {
             return error.message;
@@ -67,6 +79,15 @@ export class OrderService {
                 },
                 data: {
                     confirmedByAdmin:true
+                },
+                include:{
+                    product:{
+                        select:{
+                            name:true,
+                            description:true,
+                            categoryId:true
+                        }
+                    }
                 }
             });
             return order;

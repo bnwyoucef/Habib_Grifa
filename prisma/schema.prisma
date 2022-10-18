@@ -49,4 +49,5 @@ model Order {
   createdAt         DateTime @default(now())
   orderCost         String
   product           Product  @relation(fields: [product_Id], references: [id])
+  display           Boolean  @default(true)
 }

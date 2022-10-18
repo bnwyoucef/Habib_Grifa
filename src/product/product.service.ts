@@ -30,7 +30,13 @@ export class ProductService {
 
     async getAllProducts() {
         try {
-            const products = await this.prisma.product.findMany();
+            const products = await this.prisma.product.findMany({
+                include:{
+                    category: true,
+                    Order:true,
+                },
+
+            });
             return products;
         } catch (error) {
             return error.message;
