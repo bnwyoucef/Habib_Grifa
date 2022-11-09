@@ -55,9 +55,23 @@ export class ProductService {
             return error.message;
         }
     }
+    async getProductById(id: string) {
+        try {
+            const product = await this.prisma.product.findFirst({
+                where: {
+                    id: parseInt(id)
+                }
+            });
+            return product;
+        } catch (error) {
+            return error.message;
+        }
+    }
 
-    async updateProduct(id: string,productDto:UpdateProductDto,images:any) {
+    async updateProduct(id: string,productDto:any,images:any) {
         let newProduct = {}
+        console.log(';;;',id,productDto,images);
+        
         try {
             if(productDto.name) {
                 newProduct = await this.prisma.product.update({
@@ -111,7 +125,7 @@ export class ProductService {
                 }
                })
             }
-            if(images.length) {
+            if(images?.length) {
                 let imagesStr = '';
                 images.forEach((image) => (
                     imagesStr += image.filename + ','

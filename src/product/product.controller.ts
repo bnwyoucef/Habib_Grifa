@@ -10,7 +10,7 @@ export class ProductController {
     @Post('create')
     @UseInterceptors(FilesInterceptor('images'))
     uploadFile(@UploadedFiles() images: Array<Express.Multer.File>,@Body() productDto: ProductDto) {
-      return this.productService.createProduct(productDto,images);
+        return this.productService.createProduct(productDto,images);
     }
 
     @Get('image/:imageName')
@@ -23,6 +23,11 @@ export class ProductController {
         return this.productService.getAllProducts();
     }
 
+    @Get(':id')
+    getProductById(@Param('id') id: string) {
+        return this.productService.getProductById(id);
+    }
+
     @Delete(':id')
     deleteProduct(@Param('id') id: string) {
         return this.productService.deleteProductById(id);
@@ -30,9 +35,8 @@ export class ProductController {
 
     @Patch('update/:id')
     @UseInterceptors(FilesInterceptor('images'))
-    updateProduct(@Param('id') id: string,@Body() productDto:UpdateProductDto,@UploadedFiles() images: Array<Express.Multer.File>) {
-        console.log(images);
-        
+    updateProduct(@Param('id') id: string,@Body() productDto:any,@UploadedFiles() images: Array<Express.Multer.File>) {
         return this.productService.updateProduct(id,productDto,images);
     }
+   
 }
