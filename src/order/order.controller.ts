@@ -9,7 +9,8 @@ export class OrderController {
 
     @Post('create-order')
     @UseInterceptors(FileInterceptor('image'))
-    createOrder(@UploadedFile() image: Express.Multer.File,@Body() orderDto: OrderDto) {    
+    createOrder(@UploadedFile() image: Express.Multer.File,@Body() orderDto: OrderDto) { 
+        console.log(orderDto);
         return this.orderService.createNewOrder(orderDto,image);
     }
     //get the payement check image

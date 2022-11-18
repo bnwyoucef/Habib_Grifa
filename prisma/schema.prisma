@@ -16,13 +16,13 @@ model User {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  name        String
+  name        String   @default("")
   description String   @db.Text
-  price       Int
-  images      String
-  sizes       String
+  price       Int      @default(0)
+  images      String   @default("")
+  sizes       String   @default("")
   createdAt   DateTime @default(now())
-  categoryId  Int
+  categoryId  Int      @default(-1)
   category    Category @relation(fields: [categoryId], references: [id])
   Order       Order[]
 
@@ -37,17 +37,17 @@ model Category {
 
 model Order {
   id                Int      @id @default(autoincrement())
-  clientName        String
-  clientPhoneNumber String
-  productImageName  String
-  clientWilaya      String
-  paymentCheckImage String
-  productSize       String
-  productQuantity   Int
+  clientName        String   @default("")
+  clientPhoneNumber String   @default("")
+  productImageName  String   @default("")
+  clientWilaya      String   @default("")
+  paymentCheckImage String   @default("")
+  productSize       String   @default("")
+  productQuantity   Int      @default(1)
   confirmedByAdmin  Boolean  @default(false)
-  product_Id        Int
+  product_Id        Int      @default(-1)
   createdAt         DateTime @default(now())
-  orderCost         String
-  product           Product  @relation(fields: [product_Id], references: [id])
+  orderCost         String   @default("")
+  product           Product  @relation(fields: [product_Id], references: [id], onDelete: SetDefault)
   display           Boolean  @default(true)
 }

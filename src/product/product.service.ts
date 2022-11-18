@@ -20,6 +20,10 @@ export class ProductService {
                    images: imagesString,
                    sizes: productDto.sizes,
                    categoryId: parseInt(productDto.categoryId),
+                },
+                include :{
+                    category: true,
+                    Order:true,
                 }
             });
             return product;
@@ -48,7 +52,11 @@ export class ProductService {
             const product = await this.prisma.product.delete({
                 where: {
                     id: parseInt(id)
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
             });
             return product;
         } catch (error) {
@@ -60,6 +68,10 @@ export class ProductService {
             const product = await this.prisma.product.findFirst({
                 where: {
                     id: parseInt(id)
+                },
+                include: {
+                    category: true,
+                    Order: true,
                 }
             });
             return product;
@@ -70,7 +82,6 @@ export class ProductService {
 
     async updateProduct(id: string,productDto:any,images:any) {
         let newProduct = {}
-        console.log(';;;',id,productDto,images);
         
         try {
             if(productDto.name) {
@@ -80,7 +91,11 @@ export class ProductService {
                 },
                 data: {
                     name: productDto.name,
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
 
@@ -91,7 +106,11 @@ export class ProductService {
                 },
                 data: {
                     description: productDto.description,
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
             if(productDto.price) {
@@ -101,7 +120,11 @@ export class ProductService {
                 },
                 data: {
                     price: parseInt( productDto.price),
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
 
@@ -112,7 +135,11 @@ export class ProductService {
                 },
                 data: {
                     sizes: productDto.sizes,
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
             if(productDto.categoryId) {
@@ -122,7 +149,11 @@ export class ProductService {
                 },
                 data: {
                     categoryId: parseInt(productDto.categoryId),
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
             if(images?.length) {
@@ -136,7 +167,11 @@ export class ProductService {
                 },
                 data: {
                     images: imagesStr,
-                }
+                },
+                include:{
+                    category: true,
+                    Order:true,
+                },
                })
             }
             return newProduct;

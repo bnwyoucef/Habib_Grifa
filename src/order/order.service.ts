@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrderDto } from './dto';
+import { OrdersGateway } from './order.gateway';
+
 
 @Injectable()
 export class OrderService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService,private ordersGateway: OrdersGateway) {}
 
     async createNewOrder(orderDto: OrderDto,image:any) {
         try {
@@ -26,8 +28,19 @@ export class OrderService {
                         productQuantity: parseInt(orderDto.productQuantity),
                         product_Id: parseInt(orderDto.productId),
                         orderCost: String(orderCost)
+                    },
+                    include:{
+                        product:{
+                            select:{
+                                name:true,
+                                description:true,
+                                categoryId:true
+                            }
+                        }
+    
                     }
                 });
+                this.ordersGateway.server.emit('order-added',order);
                 return order;
             }else {
                 return 'product dont found!'
